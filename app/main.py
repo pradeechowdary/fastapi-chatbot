@@ -10,6 +10,7 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi import Response
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
@@ -38,6 +39,10 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 @app.get("/")
 def root():
     return FileResponse("templates/index.html")
+
+@app.head("/")   # ← add this
+def root_head():
+    return Response(status_code=200)
 
 # sessions
 History = List[Dict[str, str]]
