@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>FastAPI Chatbot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>FastAPI Chatbot</h1>
+
+      <div id="chat" class="chat"></div>
+
+      <form id="form" class="composer">
+        <input id="input" type="text" placeholder="Type a message…" autocomplete="off" />
+        <button id="send" type="submit">Send</button>
+        <button id="clear" type="button" class="ghost">Clear</button>
+      </form>
+      <p class="hint">Tip: try <code>help</code> or <code>clear history</code></p>
+    </main>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

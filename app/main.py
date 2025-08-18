@@ -4,6 +4,8 @@ from typing import Dict, List
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
@@ -24,11 +26,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# --- super-light in-memory session store ---
+# --- serve static files (css/js) and an index page ---
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+@app.get("/")
+def root():
+    return FileResponse("templates/index.html")
+
+# --- in-memory session store ---
 History = List[Dict[str, str]]    # [{"role":"user"/"bot","content":"..."}]
 SESSIONS: Dict[str, History] = {}
 
-# --- a tiny rule-based responder to feel smarter than "echo" ---
+# --- tiny rule-based brain (starter) ---
 def small_talk_brain(message: str) -> str:
     m = message.lower().strip()
 
@@ -56,7 +65,6 @@ def small_talk_brain(message: str) -> str:
     if "clear" in m and "history" in m:
         return "If you send 'clear history', I’ll start fresh next turn."
 
-    # fallback: short, friendly mirror
     return f"You said: “{message}”. (Tip: try 'help' to see what I can do.)"
 
 def get_or_create_session(session_id: str | None) -> str:
@@ -75,7 +83,6 @@ def chat(req: ChatRequest):
     sid = get_or_create_session(req.session_id)
     user_msg = req.message.strip()
 
-    # special command to wipe history
     if user_msg.lower() == "clear history":
         SESSIONS[sid] = []
         reply = "History cleared for this session. How can I help now?"
@@ -87,7 +94,7 @@ def chat(req: ChatRequest):
     SESSIONS[sid].append({"role": "bot", "content": reply})
     return ChatResponse(reply=reply, session_id=sid)
 
-# --- Optional: simple WebSocket for real-time chat ---
+# --- Optional WebSocket for realtime chat ---
 class WSMessage(BaseModel):
     message: str
     session_id: str | None = None
@@ -120,5 +127,4 @@ async def websocket_endpoint(ws: WebSocket):
             SESSIONS[sid].append({"role": "bot", "content": reply})
             await ws.send_json({"reply": reply, "session_id": sid})
     except WebSocketDisconnect:
-        # client closed the connection
         return
