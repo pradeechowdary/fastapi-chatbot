@@ -2,22 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>FastAPI Chatbot</title>
+    <title>Pradeep Ponnam • Résumé Bot</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="/static/styles.css" />
   </head>
   <body>
     <main class="container">
-      <h1>FastAPI Chatbot</h1>
+      <h1>Pradeep Ponnam — Résumé Q&A Bot</h1>
+      <p class="banner">This bot answers <strong>only</strong> from Pradeep’s résumé. If something isn’t in the résumé, it will say so.</p>
 
       <div id="chat" class="chat"></div>
 
       <form id="form" class="composer">
-        <input id="input" type="text" placeholder="Type a message…" autocomplete="off" />
+        <input id="input" type="text" placeholder="Ask about Pradeep’s skills, projects, roles…" autocomplete="off" />
         <button id="send" type="submit">Send</button>
         <button id="clear" type="button" class="ghost">Clear</button>
       </form>
-      <p class="hint">Tip: try <code>help</code> or <code>clear history</code></p>
+      <p class="hint">Try: “What did Pradeep do at ISRO?”, “List Spring Boot projects”, “Summarize awards”.</p>
     </main>
 
     <script src="/static/app.js"></script>

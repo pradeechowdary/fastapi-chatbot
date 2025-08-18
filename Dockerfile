@@ -1,26 +1,19 @@
-# Use slim Python 3.11 base image
 FROM python:3.11-slim
 
-# Install system dependencies (optional but handy for builds)
+# system packages (faiss wheels should work; libgomp helps on some bases)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential curl && \
-    rm -rf /var/lib/apt/lists/*
+    libgomp1 && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
 WORKDIR /app
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt \
+ && pip install --no-cache-dir faiss-cpu==1.8.0.post1 sentence-transformers==2.7.0 pypdf==4.2.0 httpx==0.27.0
 
-# Copy and install Python dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY . /app
 
-# Copy the rest of the app
-COPY . .
+# ensure data dir exists (Render disk mounts to /data)
+RUN mkdir -p /data
+ENV PYTHONUNBUFFERED=1
 
-# Set environment variables
-ENV PORT=8000
-
-# Expose the port FastAPI will run on
-EXPOSE 8000
-
-# Run FastAPI app with Uvicorn
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# On first boot, app will ingest /data/PonnamcCV.pdf into /data/index.faiss
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "10000"]

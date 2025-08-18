@@ -2,3 +2,12 @@ fastapi==0.111.0
 uvicorn[standard]==0.30.3
 pydantic==2.7.4
 python-dotenv==1.0.1
+
+# RAG stack
+faiss-cpu==1.8.0.post1
+sentence-transformers==2.7.0
+pypdf==4.2.0
+python-docx==1.1.2
+
+# Groq SDK
+groq==0.9.0

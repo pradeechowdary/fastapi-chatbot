@@ -26,6 +26,16 @@ body {
 
 h1 { margin: 0 0 16px; font-size: 28px; }
 
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.muted { color: var(--muted); font-size: 13px; margin-left: 8px; }
+
 .chat {
   background: var(--panel);
   border: 1px solid var(--border);
@@ -46,6 +56,9 @@ h1 { margin: 0 0 16px; font-size: 28px; }
   white-space: pre-wrap;
 }
 .msg.user .bubble { background: var(--user); border-color: #1d2b44; }
+
+.refs { margin-top: 8px; }
+.refs ul { margin: 6px 0 0; padding-left: 18px; }
 
 .composer {
   display: grid;
@@ -73,3 +86,11 @@ h1 { margin: 0 0 16px; font-size: 28px; }
 .composer .ghost { background: transparent; color: var(--muted); }
 
 .hint { color: var(--muted); font-size: 13px; }
+/* keep your existing styles; just adding the banner */
+.banner {
+  background: #0f6fff22;
+  border: 1px solid #2a3542;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin: 8px 0 12px;
+}

@@ -34,7 +34,7 @@ async function sendMessage(message) {
     const json = await res.json();
     sessionId = json.session_id;
     addMessage("bot", json.reply);
-  } catch (e) {
+  } catch {
     addMessage("bot", "Network error. Is the server running?");
   }
 }
