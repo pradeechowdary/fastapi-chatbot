@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: fastapi-chatbot
+    env: docker
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /health
+    envVars:
+      - key: APP_NAME
+        value: fastapi-chatbot
+      - key: ALLOWED_ORIGINS
+        value: "*"
