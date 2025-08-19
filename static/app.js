@@ -31,11 +31,15 @@ async function sendMessage(message) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message, session_id: sessionId })
     });
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`HTTP ${res.status} ${text.slice(0, 200)}`);
+    }
     const json = await res.json();
     sessionId = json.session_id;
     addMessage("bot", json.reply);
-  } catch {
-    addMessage("bot", "Network error. Is the server running?");
+  } catch (e) {
+    addMessage("bot", `Request failed: ${e.message}`);
   }
 }
 
