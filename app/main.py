@@ -1,6 +1,5 @@
 import os
 import uuid
-import time
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -62,12 +61,10 @@ def _startup():
         if env_path and Path(env_path).exists():
             chosen = env_path
         else:
-            # try default under /app/data
             default = ROOT_DIR / "data" / "PonnamcCV.pdf"
             if default.exists():
                 chosen = str(default)
             else:
-                # pick first pdf under data/
                 pdfs = list((ROOT_DIR / "data").glob("*.pdf"))
                 if pdfs:
                     chosen = str(pdfs[0])
